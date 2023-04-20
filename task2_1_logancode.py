@@ -178,7 +178,7 @@ def parse_command_line_arguments():
 
     args = input('Type in arguments: ')
 
-     #콘솔 매개 변수로 explain이 들어왔는지 검사
+     #To check if 'explain' was passed as a console parameter
     if args.__contains__('explain'):
         N_flags = N_flags + 1
         explain = True
