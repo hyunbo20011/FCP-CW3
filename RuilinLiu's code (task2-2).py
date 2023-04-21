@@ -170,7 +170,7 @@ def parse_command_line_arguments(argv):
         show_explain = True
 
     
-    return (show_explain)
+    return (show_explain)  #Return all the flag together there!!!!!!!!!!!!!!!!!!!!!!!!#
 
 
 '''
