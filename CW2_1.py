@@ -1,5 +1,3 @@
-#Hello
-
 #!/usr/bin/env python3
 import copy
 import time
@@ -168,11 +166,6 @@ def parse_command_line_arguments(argv):
 
     
     return (show_explain)  #Return all the flag together there!!!!!!!!!!!!!!!!!!!!!!!!#
-
-
-def solution
-22222
-for if 
 
 
 '''
