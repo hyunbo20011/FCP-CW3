@@ -124,7 +124,7 @@ def solve_sudoku(grid,x,y,n_rows,n_cols,explain): #Add explain
     for grid[x][y] in value(grid,x,y,n_rows,n_cols):
         #Find a answer for (x, y), when explain is True,
         if explain:
-            print_explain(grid,x,y) #Print the content
+            print(f"Put {grid[x][y]} in location ({x+1}, {y+1})") #Print the content
         next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
         if next_y==-1:
             return True
@@ -133,9 +133,6 @@ def solve_sudoku(grid,x,y,n_rows,n_cols,explain): #Add explain
         else:
             grid[x][y]=0
 
-
-def print_explain(grid,x,y):
-    print(f"Put {grid[x][y]} in location ({x+1}, {y+1})")
 
 
 def solve(grid,n_rows,n_cols, explain):
