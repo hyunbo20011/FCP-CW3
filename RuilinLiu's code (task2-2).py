@@ -145,13 +145,14 @@ def solve(grid,n_rows,n_cols, explain):
     x, y = star_pos(grid,n_rows,n_cols)
     #solve_sudoku(grid, x, y,n_rows,n_cols)
     #print(grid)
+
     for v in value(grid,x,y,n_rows,n_cols):
         grid[x][y]=v
         # Due to the limitation of recursive calls, the first answer found cannot be printed here, 
 
         next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
         solve_sudoku(grid, next_x, next_y, n_rows, n_cols, explain)
-        print(grid)
+        print(grid)    #Print the finall result of the grid
         return grid
 
 
