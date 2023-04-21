@@ -126,12 +126,14 @@ def solve_sudoku(grid,x,y,n_rows,n_cols,explain): #Add explain
         if explain:
             print(f"Put {grid[x][y]} in location ({x+1}, {y+1})") #Print the content
         next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
+
         if next_y==-1:
             return True
         elif solve_sudoku(grid,next_x,next_y,n_rows,n_cols,explain):
             return True
         else:
             grid[x][y]=0
+        
 
 
 
