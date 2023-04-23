@@ -159,6 +159,8 @@ def find_grid_size(grid):
 find_grid_size(grid1)
 
 
+
+test_list = ["Test1","Test2","Test3"]
 def output(out_grid, explain):
     '''
     This function is output the finall solution into 
@@ -178,12 +180,14 @@ def output(out_grid, explain):
             f.write(str(i) + ', ')  #Outputnumber and ","
         f.write('\n')
     
-    
-    f.write("\n\nExplanation of how to fill correct number in the file ''"+ in_filename + "'' is:\n\n") 
-    for line in explain:
-        for i in line:
-            f.write(i)
-        f.write('\n')
+
+    if explain == 0:    #Output explaination if explain not equal 0
+        return 0
+    else:
+        f.write("\n\n\nExplanation of how to fill correct number in the file ''"+ in_filename + "'' is:\n\n") 
+        for line in explain:                                        
+            f.write(line)
+            f.write('\n')
             
     f.close
 
@@ -219,8 +223,7 @@ def main():
     print("Test script complete, Total points: %d" % points)
     
     
-    output(solution, "asdkjashdkjhaskd, sdhjkasjdh")    #############################################Change for Task2-2
+    output(solution, test_list)    #############################################Change for Task2-2
 
 if __name__ == "__main__":
     main()
-
