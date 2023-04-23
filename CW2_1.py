@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import copy
 import time
+import sys
 
 # Grids 1-5 are 2x2
 grid1 = [
@@ -136,20 +137,44 @@ def solve_sudoku(grid,x,y,n_rows,n_cols):
         if next_y==-1:
             return True
         elif solve_sudoku(grid,next_x,next_y,n_rows,n_cols):
+            #pos = set()
+            #pos = next_x,next_y
+            #explain_poslist.append(pos)
+            #explain_vallist.append(grid[next_x][next_y])
             return True
         else:
             grid[x][y]=0
 
+explain_poslist = []
+explain_vallist = []
+def explain(origin_grid, grid, xlen, ylen):
+    for x in range(0, xlen):
+        for y in range(0, ylen):
+            print(origin_grid[x][y])
+            if (origin_grid[x][y] is 0):
+                print(f"Put {grid[x][y]} in ({x},{y})")
 
-def solve(grid,n_rows,n_cols):
+def solve(grid,n_rows,n_cols,show_explain):
     '''
     Solve function for Sudoku coursework.
     Comment out one of the lines below to either use the random or recursive solver
     '''
+    origin_grid = [[]]
+    for x in range(0, n_rows):
+        origin_grid.append([])
+        for y in range(0, n_cols):
+            origin_grid[x].append(grid[x][y])
+
+
     x, y = star_pos(grid,n_rows,n_cols)
     solve_sudoku(grid, x, y,n_rows,n_cols)
     print(grid)
+  
+    if (show_explain):
+        explain(origin_grid, grid, n_rows, n_cols)
+
     return grid
+
 
 MAX_FLAGS = 4  #There only 4 flags in the CW3
 
@@ -177,8 +202,8 @@ DO NOT CHANGE CODE BELOW THIS LINE
 
 #args -> Input entered through the console, i.e. parameters
 def main(args):
-    explain = parse_command_line_arguments(args) #receiving parameters
     points = 0
+    show_explain = parse_command_line_arguments(args) #receiving parameters
 
     print("Running test script for coursework 1")
     print("====================================")
@@ -186,7 +211,7 @@ def main(args):
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
         start_time = time.time()
-        solution = solve(grid,n_rows,n_cols,explain)
+        solution = solve(grid,n_rows,n_cols,show_explain)
         elapsed_time = time.time() - start_time
         print("Solved in: %f seconds" % elapsed_time)
         # print(solution)
@@ -202,8 +227,11 @@ def main(args):
     '''
     Below Part is use for the flag
     '''
-    
-    show_explain = parse_command_line_arguments(args)
+    if(show_explain):
+       explain()
+
+
+
 
 
 
