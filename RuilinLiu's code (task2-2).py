@@ -170,14 +170,23 @@ def output(out_grid, explain):
     current_path = abspath(dirname(__file__))    #Get the current path
     file_path = os.path.join(current_path,'output\\',out_filename)  #This is the path of the output file
     
-    f = open(file_path, 'w')
-    f.write("The correct solution of file ''"+ in_filename + "'' is:\n\n")
+    f = open(file_path, 'w')                                              #Output the correct grid
+    f.write("The correct solution of file ''"+ in_filename + "'' is:\n\n")  
 
     for line in out_grid:
         for i in line:    
-            f.write(str(i) + ', ')
+            f.write(str(i) + ', ')  #Outputnumber and ","
         f.write('\n')
+    
+    
+    f.write("\n\nExplanation of how to fill correct number in the file ''"+ in_filename + "'' is:\n\n") 
+    for line in explain:
+        for i in line:
+            f.write(i)
+        f.write('\n')
+            
     f.close
+
 
 
 
@@ -210,7 +219,7 @@ def main():
     print("Test script complete, Total points: %d" % points)
     
     
-    output(solution, 0)    #############################################Change for Task2-2
+    output(solution, "asdkjashdkjhaskd, sdhjkasjdh")    #############################################Change for Task2-2
 
 if __name__ == "__main__":
     main()
