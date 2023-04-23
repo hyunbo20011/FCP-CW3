@@ -1,54 +1,19 @@
-#wiwiwiwiw
-
-import sys #add import sys from averages.py to use explain flag
+#!/usr/bin/env python3
 import copy
 import time
 
-# Grids 1-5 are 2x2
-grid1 = [
-    [1, 0, 4, 2],
-    [4, 2, 1, 3],
-    [2, 1, 3, 4],
-    [3, 4, 2, 1]]
+###################################################### Task 2-2's libraries
+import os    #This library is for open file
+from os.path import dirname, abspath    #This library is for get the file path
+import re    #This library is for extract numbers from a string
+######################################################
 
-grid2 = [
-    [1, 0, 4, 2],
-    [4, 2, 1, 3],
-    [2, 1, 0, 4],
-    [3, 4, 2, 1]]
 
-grid3 = [
-    [1, 0, 4, 2],
-    [4, 2, 1, 0],
-    [2, 1, 0, 4],
-    [0, 4, 2, 1]]
+########################################################################### Change there for Task2-2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+grid1=[]
 
-grid4 = [
-    [1, 0, 4, 2],
-    [0, 2, 1, 0],
-    [2, 1, 0, 4],
-    [0, 4, 2, 1]]
 
-grid5 = [
-    [1, 0, 0, 2],
-    [0, 0, 1, 0],
-    [0, 1, 0, 4],
-    [0, 0, 0, 1]]
-
-grid6 = [
-    [0, 0, 6, 0, 0, 3],
-    [5, 0, 0, 0, 0, 0],
-    [0, 1, 3, 4, 0, 0],
-    [0, 0, 0, 0, 0, 6],
-    [0, 0, 1, 0, 0, 0],
-    [0, 5, 0, 0, 6, 4]]
-
-grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2),(grid6, 2, 3)]
-'''
-===================================
-DO NOT CHANGE CODE ABOVE THIS LINE
-===================================
-'''
+###########################################################################
 
 def check_section(section, n):
     if len(set(section)) == len(section) and sum(section) == sum([i for i in range(n + 1)]):
@@ -118,72 +83,111 @@ def get_next(grid,x,y,n_rows,n_cols):
 def value(grid,x,y,n_rows,n_cols):
     n=n_rows*n_cols
     i,j=x//n_rows,y//n_cols
-    box=[grid[i*2+r][j*2+c] for r in range(n_rows) for c in range(n_cols)]
+    box=[grid[i*n_rows+r][j*n_cols+c] for r in range(n_rows) for c in range(n_cols)]
     v=set([x for x in range(1,n+1)])-set(box)-set(grid[x])-set(list(zip(*grid))[y])
     return list(v)
 
-def solve_sudoku(grid,x,y,n_rows,n_cols,explain): #Add explain
+def solve_sudoku(grid,x,y,n_rows,n_cols):
     for grid[x][y] in value(grid,x,y,n_rows,n_cols):
-        #Find a answer for (x, y), when explain is True,
-        if explain:
-            print(f"Put {grid[x][y]} in location ({x+1}, {y+1})") #Print the content
         next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
-
         if next_y==-1:
             return True
-        elif solve_sudoku(grid,next_x,next_y,n_rows,n_cols,explain):
+        elif solve_sudoku(grid,next_x,next_y,n_rows,n_cols):
             return True
         else:
             grid[x][y]=0
-        
 
 
-
-def solve(grid,n_rows,n_cols, explain):
+def solve(grid,n_rows,n_cols):
     '''
     Solve function for Sudoku coursework.
     Comment out one of the lines below to either use the random or recursive solver
     '''
     x, y = star_pos(grid,n_rows,n_cols)
-    #solve_sudoku(grid, x, y,n_rows,n_cols)
-    #print(grid)
-
-    for v in value(grid,x,y,n_rows,n_cols):
-        grid[x][y]=v
-        # Due to the limitation of recursive calls, the first answer found cannot be printed here, 
-
-        next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
-        solve_sudoku(grid, next_x, next_y, n_rows, n_cols, explain)
-        print(grid)    #Print the finall result of the grid
-        return grid
+    solve_sudoku(grid, x, y,n_rows,n_cols)
+    print(grid)
+    return grid
 
 
-MAX_FLAGS = 4  #There only 4 flags in the CW3
+#####################################Task2-2####################################################
+def read_file(filename):    #By Ruilin Liu
+    '''
+    This function is used to read a file, and put them into a list to
+    set up a new grid.
+    '''
+    global in_filename
+    in_filename = filename    #Use for function "output"
 
-#Function that interpret input parameter from console 
-def parse_command_line_arguments(argv):
+    current_path = abspath(dirname(__file__))    #Get the current path
+    file_path = os.path.join(current_path,'grids\\',filename)  #This is the path of the file
+
+    with open(file_path,'r') as f:  #Open the file
+        lines=f.readlines()    #Read all lines in the file
+
+        for line in lines:
+            number = re.findall("\d+",line)  #Extract numbers from each line
+            l=[]
+            for i in number:
+                l.append(int(i))
+            grid1.append(l)    #Append the list into grid2 as a sub-list
+    f.close()
+
+read_file('med2')    #!!!!!!!!!!!This will be changed by the flag!!!!!!!!!!!!
+                     #Must enter the fullname of the file!!!!!!!!!!!!!!!!!!!!
+
+
+def find_grid_size(grid):
+    '''
+    This function is used to find the size of grid.
+    '''
+    global grid_row, grid_column, grids
+
+    if len(grid) == 4 and len(grid[0]) == 4:  #2*2 grid
+        grid_row = 2
+        grid_column = 2
+    elif len(grid) == 6 and len(grid[0]) == 6:  #2*3 grid
+        grid_row = 2
+        grid_column = 3
+    elif len(grid) == 9 and len(grid[0]) == 9:  #3*3 grid
+        grid_row = 3
+        grid_column = 3
+
+    grids = [[grid1, grid_row, grid_column]]  #This is moved from the beginning of the solver
+                                              #Which tell solver which grid need be solved and the,
+                                              #size of the grid
+
+find_grid_size(grid1)
+
+
+def output(out_grid, explain):
+    '''
+    This function is output the finall solution into 
+    '''
+
+    out_filename = "Output_of_'" + in_filename + "'.txt" #Combine old file name and 'Output of'
+
+
+    current_path = abspath(dirname(__file__))    #Get the current path
+    file_path = os.path.join(current_path,'output\\',out_filename)  #This is the path of the output file
     
-    N_flags = 0
-    show_explain = False
+    f = open(file_path, 'w')
+    f.write("The correct solution of file ''"+ in_filename + "'' is:\n\n")
 
-    #Check for the explain flag
-    if'--explain' in argv[0:MAX_FLAGS]:
-        N_flags = N_flags + 1
-        show_explain = True
-
-    
-    return (show_explain)  #Return all the flag together there!!!!!!!!!!!!!!!!!!!!!!!!#
+    for line in out_grid:
+        for i in line:    
+            f.write(str(i) + ', ')
+        f.write('\n')
+    f.close
 
 
-'''
-===================================
-DO NOT CHANGE CODE BELOW THIS LINE
-===================================
-'''
 
-#args -> Input entered through the console, i.e. parameters
-def main(args):
-    explain = parse_command_line_arguments(args) #receiving parameters
+
+
+
+#####################################Task2-2####################################################
+
+
+def main():
     points = 0
 
     print("Running test script for coursework 1")
@@ -192,7 +196,7 @@ def main(args):
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
         start_time = time.time()
-        solution = solve(grid,n_rows,n_cols,explain)
+        solution = solve(grid,n_rows,n_cols)
         elapsed_time = time.time() - start_time
         print("Solved in: %f seconds" % elapsed_time)
         # print(solution)
@@ -204,15 +208,9 @@ def main(args):
 
     print("====================================")
     print("Test script complete, Total points: %d" % points)
-
-    '''
-    Below Part is use for the flag
-    '''
     
-    show_explain = parse_command_line_arguments(args)
-
-
-
+    
+    output(solution, 0)    #############################################Change for Task2-2
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
