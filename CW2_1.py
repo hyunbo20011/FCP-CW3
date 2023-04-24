@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import copy
 import time
-import sys
+import sys #
 
 # Grids 1-5 are 2x2
 grid1 = [
@@ -137,46 +137,45 @@ def solve_sudoku(grid,x,y,n_rows,n_cols):
         if next_y==-1:
             return True
         elif solve_sudoku(grid,next_x,next_y,n_rows,n_cols):
-            #pos = set()
-            #pos = next_x,next_y
-            #explain_poslist.append(pos)
-            #explain_vallist.append(grid[next_x][next_y])
             return True
         else:
             grid[x][y]=0
 
-explain_poslist = []
-explain_vallist = []
-def explain(origin_grid, grid, xlen, ylen):
-    for x in range(0, xlen):
-        for y in range(0, ylen):
-            print(origin_grid[x][y])
-            if (origin_grid[x][y] is 0):
-                print(f"Put {grid[x][y]} in ({x},{y})")
+#origin_grid=original grid shown at the beginning, grid = Solved(Filled the grid instead of 0, xlen=Length of Row, ylen=Length of column )
+def explain(origin_grid, grid, xlen, ylen): #Write explain function to make a flag 
+    '''
+    The reason I use for loop twice is to find a right answer by using all the numbers 
+    If loop is to find a 0 from the origin grid
+    '''
+    
+    for x in range(0, xlen): #Set a range from 0 to end of the row
+        for y in range(0, ylen): #set a range from 0 to end of the column
+            if(origin_grid[x][y] == 0): #Find a empty grid from the original and output the right answer
+                print(f"put {grid[x][y]} in ({x}, {y})")
+
 
 def solve(grid,n_rows,n_cols,show_explain):
     '''
     Solve function for Sudoku coursework.
     Comment out one of the lines below to either use the random or recursive solver
     '''
-    origin_grid = [[]]
-    for x in range(0, n_rows):
-        origin_grid.append([])
-        for y in range(0, n_cols):
-            origin_grid[x].append(grid[x][y])
-
+ 
+    full_row = len(grid) #full_row = Full length of the row
+    full_col = len(grid[0]) #fill_col = Full length of the column 
+    origin_grid = [[grid[i][j] for j in range(full_col)] for i in range(full_row)] #Paste all the numbers in original grid
 
     x, y = star_pos(grid,n_rows,n_cols)
     solve_sudoku(grid, x, y,n_rows,n_cols)
+    print(origin_grid)
     print(grid)
-  
+
     if (show_explain):
-        explain(origin_grid, grid, n_rows, n_cols)
+        explain(origin_grid, grid, full_row, full_col) #To make a explain flag
+    origin_grid.clear()
 
     return grid
 
-
-MAX_FLAGS = 4  #There only 4 flags in the CW3
+MAX_FLAGS = 4
 
 #Function that interpret input parameter from console 
 def parse_command_line_arguments(argv):
@@ -184,14 +183,12 @@ def parse_command_line_arguments(argv):
     N_flags = 0
     show_explain = False
 
-    #Check for the explain flag
-    if'--explain' in argv[0:MAX_FLAGS]:
+     #To check if 'explain' was passed as a console parameter
+    if '--explain' in argv[0:MAX_FLAGS]:
         N_flags = N_flags + 1
         show_explain = True
 
-    
-    return (show_explain)  #Return all the flag together there!!!!!!!!!!!!!!!!!!!!!!!!#
-
+    return (show_explain)
 
 '''
 ===================================
@@ -200,7 +197,6 @@ DO NOT CHANGE CODE BELOW THIS LINE
 '''
 
 
-#args -> Input entered through the console, i.e. parameters
 def main(args):
     points = 0
     show_explain = parse_command_line_arguments(args) #receiving parameters
@@ -224,17 +220,6 @@ def main(args):
     print("====================================")
     print("Test script complete, Total points: %d" % points)
 
-    '''
-    Below Part is use for the flag
-    '''
-    if(show_explain):
-       explain()
-
-
-
-
-
-
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv[1:]) #To get a flag
