@@ -10,9 +10,46 @@ import re    #This library is for extract numbers from a string
 
 
 ########################################################################### Change there for Task2-2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-grid1=[]
+#Grids 1-5 are 2x2
+grid1 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 3, 4],
+		[3, 4, 2, 1]]
 
+grid2 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 0, 4],
+		[3, 4, 2, 1]]
 
+grid3 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid4 = [
+		[1, 0, 4, 2],
+		[0, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid5 = [
+		[1, 0, 0, 2],
+		[0, 0, 1, 0],
+		[0, 1, 0, 4],
+		[0, 0, 0, 1]]
+
+grid6 = [
+		[0, 0, 6, 0, 0, 3],
+		[5, 0, 0, 0, 0, 0],
+		[0, 1, 3, 4, 0, 0],
+		[0, 0, 0, 0, 0, 6],
+		[0, 0, 1, 0, 0, 0],
+		[0, 5, 0, 0, 6, 4]]
+
+grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
 ###########################################################################
 
 def check_section(section, n):
@@ -115,8 +152,10 @@ def read_file(filename):    #By Ruilin Liu
     This function is used to read a file, and put them into a list to
     set up a new grid.
     '''
-    global in_filename
+    global in_filename, in_grid
     in_filename = filename    #Use for function "output"
+
+    in_grid = []
 
     current_path = abspath(dirname(__file__))    #Get the current path
     file_path = os.path.join(current_path,'grids\\',filename)  #This is the path of the file
@@ -129,7 +168,7 @@ def read_file(filename):    #By Ruilin Liu
             l=[]
             for i in number:
                 l.append(int(i))
-            grid1.append(l)    #Append the list into grid2 as a sub-list
+            in_grid.append(l)    #Append the list into grid2 as a sub-list
     f.close()
 
 read_file('med2')    #!!!!!!!!!!!This will be changed by the flag!!!!!!!!!!!!
@@ -151,12 +190,13 @@ def find_grid_size(grid):
     elif len(grid) == 9 and len(grid[0]) == 9:  #3*3 grid
         grid_row = 3
         grid_column = 3
-
-    grids = [[grid1, grid_row, grid_column]]  #This is moved from the beginning of the solver
+    
+    
+    grids = [[grid, grid_row, grid_column]]  #This is moved from the beginning of the solver
                                               #Which tell solver which grid need be solved and the,
                                               #size of the grid
 
-find_grid_size(grid1)
+find_grid_size(in_grid)
 
 
 
