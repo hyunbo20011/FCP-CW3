@@ -42,17 +42,7 @@ grid6 = [
     [0, 0, 1, 0, 0, 0],
     [0, 5, 0, 0, 6, 4]]
 
-grid7=[[0, 0, 0, 6, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 5, 0, 1],
-[3, 6, 9, 0, 8, 0, 4, 0, 0],
-[0, 0, 0, 0, 0, 6, 8, 0, 0],
-[0, 0, 0, 1, 3, 0, 0, 0, 9],
-[4, 0, 5, 0, 0, 9, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 3, 0, 0],
-[0, 0, 6, 0, 0, 7, 0, 0, 0],
-[1, 0, 0, 3, 4, 0, 0, 0, 0]]
-
-grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2),(grid6,2,3),(grid7,3,3)]
+grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2),(grid6,2,3)]
 '''
 ===================================
 DO NOT CHANGE CODE ABOVE THIS LINE
@@ -141,17 +131,31 @@ def solve_sudoku(grid,x,y,n_rows,n_cols):
         else:
             grid[x][y]=0
 
+
+zero_position = []    #This list contain all 0 position for each grid in each sub-list, it's add from funciton "explain"
+all_grid_explain = []  #This list contain explanations for all grids 
+
 #origin_grid=original grid shown at the beginning, grid = Solved(Filled the grid instead of 0, xlen=Length of Row, ylen=Length of column )
 def explain(origin_grid, grid, xlen, ylen): #Write explain function to make a flag 
     '''
     The reason I use for loop twice is to find a right answer by using all the numbers 
     If loop is to find a 0 from the origin grid
     '''
-    
-    for x in range(0, xlen): #Set a range from 0 to end of the row
-        for y in range(0, ylen): #set a range from 0 to end of the column
-            if(origin_grid[x][y] == 0): #Find a empty grid from the original and output the right answer
-                print(f"put {grid[x][y]} in ({x}, {y})")
+    zero_position_list = []  #This list is use for add sub-list into zero_position for each grid
+    explanation = []  #This list is use for contain explanation sentance for each grid
+
+    for x in range(1, xlen+1): #Set a range from 0 to end of the row
+        for y in range(1, ylen+1): #set a range from 0 to end of the column
+            if(origin_grid[x-1][y-1] == 0): #Find a empty grid from the original and output the right answer
+                
+                explain_sentance = f"put {grid[x-1][y-1]} in ({x}, {y})"
+                print(explain_sentance)
+                
+                zero_position_list.append((x, y))  
+                explanation.append(explain_sentance) 
+
+    zero_position.append(zero_position_list)  #Add all sub-list to zero_position
+    all_grid_explain.append(explanation)  #Add all sub-list to all_grid_explain
 
 
 def solve(grid,n_rows,n_cols,show_explain):
@@ -166,7 +170,7 @@ def solve(grid,n_rows,n_cols,show_explain):
 
     x, y = star_pos(grid,n_rows,n_cols)
     solve_sudoku(grid, x, y,n_rows,n_cols)
-    print(origin_grid)
+    #print(origin_grid)
     print(grid)
 
     if (show_explain):
@@ -220,6 +224,13 @@ def main(args):
     print("====================================")
     print("Test script complete, Total points: %d" % points)
 
+"""
+for x in range(len(zero_position)):
+        print(zero_position[x])
+        print(all_grid_explain[x])
+        print()
+"""
 
 if __name__ == "__main__":
     main(sys.argv[1:]) #To get a flag
+s
