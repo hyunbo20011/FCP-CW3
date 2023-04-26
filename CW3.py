@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import copy
 import time
+import matplotlib.pyplot as plt
+import numpy
 import sys  #
 import os  # This library is for open file
 from os.path import dirname, abspath  # This library is for get the file path
