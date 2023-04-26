@@ -385,13 +385,6 @@ def parse_command_line_arguments(argv, if_out):
         elif show_explain == True:
             output(solution, all_grid_explain)
 
-<<<<<<< HEAD
-=======
-    ######################Flag --profile#########################
-    if '--profile' in argv[0:MAX_FLAGS]:
-        plot(time,time1,time2)
->>>>>>> 44776499a722199ab8a25ecece65a05ccdab207e
-
     ######################  Add flags below this line  #########################
 
     return (show_explain)  # Return this value to main funcion
