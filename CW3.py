@@ -318,7 +318,7 @@ def parse_command_line_arguments(argv, if_out):
         elif show_explain == True:
             output(solution, all_grid_explain)
 
-    ######################Flag --file#########################
+    ######################Flag --profile#########################
     if '--profile' in argv[0:MAX_FLAGS]:
         plot(time,time1,time2)
 
