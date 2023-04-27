@@ -469,7 +469,6 @@ def main(args):
         else:
             print("grid %d incorrect" % (i + 1))
 
-    #plot(Time2,Time1,Time)
 
     print("====================================")
     print("Test script complete, Total points: %d" % points)
