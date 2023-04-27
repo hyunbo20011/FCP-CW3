@@ -110,7 +110,8 @@ hard1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 3, 1, 0, 0, 8, 0, 5, 7]]
 
-grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3),(easy1,3,3),(easy2,3,3),(easy3,2,3),(med1,3,3),(med2,3,3),(hard1,3,3)]
+grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
+#grids1 = [(easy1, 3, 3),(easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
 
 
 def check_section(section, n):
@@ -323,15 +324,60 @@ def output(out_grid, explain):  # Task2-2
     f.close
 
 def plot(time,time1,time2):
-    timeaverage = {'2*2 grid': sum(time) / len(time),
-                   '2*3 grid': sum(time1) / len(time1),
-                   '3*3 grid': sum(time2) / len(time2)}
-    plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-    plt.xlabel('size')
-    plt.ylabel('time(s)')
-    plt.title('Average solving time for different size grid')
-    plt.show()
-
+    if len(time)==0 and len(time1)==0:
+        timeaverage = {'2*2 grid': sum(time) ,
+                       '2*3 grid': sum(time1) ,
+                       '3*3 grid': sum(time2) / len(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
+    elif len(time)==0 and len(time2)==0:
+        timeaverage = {'2*2 grid': sum(time),
+                       '2*3 grid': sum(time1) / len(time1),
+                       '3*3 grid': sum(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
+    elif len(time1)==0 and len(time2)==0:
+        timeaverage = {'2*2 grid': sum(time)/len(time),
+                       '2*3 grid': sum(time1) ,
+                       '3*3 grid': sum(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
+    elif len(time)==0:
+        timeaverage = {'2*2 grid': sum(time),
+                       '2*3 grid': sum(time1) / len(time1),
+                       '3*3 grid': sum(time2)/len(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
+    elif len(time1)==0:
+        timeaverage = {'2*2 grid': sum(time)/len(time),
+                       '2*3 grid': sum(time1),
+                       '3*3 grid': sum(time2) / len(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
+    elif len(time2)==0:
+        timeaverage = {'2*2 grid': sum(time) / len(time),
+                       '2*3 grid': sum(time1) / len(time1),
+                       '3*3 grid': sum(time2)}
+        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+        plt.xlabel('size')
+        plt.ylabel('time(s)')
+        plt.title('Average solving time for different size grid')
+        plt.show()
 
 MAX_FLAGS = 4
 
@@ -385,6 +431,7 @@ def parse_command_line_arguments(argv, if_out):
         elif show_explain == True:
             output(solution, all_grid_explain)
 
+
     ######################  Add flags below this line  #########################
 
     return (show_explain)  # Return this value to main funcion
@@ -421,6 +468,8 @@ def main(args):
             points = points + 10
         else:
             print("grid %d incorrect" % (i + 1))
+
+    #plot(Time2,Time1,Time)
 
     print("====================================")
     print("Test script complete, Total points: %d" % points)
