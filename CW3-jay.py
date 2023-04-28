@@ -321,6 +321,7 @@ def output(out_grid, explain):  # Task2-2
 
     f.close
     
+
 def hint(num): #task 2-3
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         n= n_rows*n_cols
@@ -351,6 +352,8 @@ def hint(num): #task 2-3
                 else:
                     grid[x-1][y-1]=0
             print(grid)
+
+
 def plot(time,time1,time2):
     if len(time)==0 and len(time1)==0:
         timeaverage = {'2*2 grid': sum(time) ,
