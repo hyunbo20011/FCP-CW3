@@ -474,7 +474,7 @@ def parse_command_line_arguments(argv, if_out):
 
 
 def main(args):
-    global solution
+    global solution, Time, Time1, Time2
 
     points = 0
     show_explain = parse_command_line_arguments(args, 0)  # receiving parameters, first variable is all arguemnts
@@ -483,9 +483,9 @@ def main(args):
     print("Running test script for coursework 1")
     print("====================================")
 
-    global Time = []
-    global Time1 = []
-    global Time2 = []
+    Time = []
+    Time1 = []
+    Time2 = []
 
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
