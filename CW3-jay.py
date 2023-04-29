@@ -483,9 +483,9 @@ def main(args):
     print("Running test script for coursework 1")
     print("====================================")
 
-    Time = []
-    Time1 = []
-    Time2 = []
+    global Time = []
+    global Time1 = []
+    global Time2 = []
 
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
