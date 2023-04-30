@@ -419,6 +419,7 @@ def parse_command_line_arguments(argv, if_out):
     first variable is all arguemnts, Second is for output file, because there's a logical error
     '''
     global show_explain
+    global Time, Time1, Time2
 
     show_explain = False
     show_file = False
@@ -474,7 +475,7 @@ def parse_command_line_arguments(argv, if_out):
 
 
 def main(args):
-    global solution, Time, Time1, Time2
+    global solution
 
     points = 0
     show_explain = parse_command_line_arguments(args, 0)  # receiving parameters, first variable is all arguemnts
@@ -504,6 +505,7 @@ def main(args):
             points = points + 10
         else:
             print("grid %d incorrect" % (i + 1))
+     #plot(Time2,Time1,Time)
 
 
     print("====================================")
