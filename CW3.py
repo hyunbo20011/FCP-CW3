@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 import copy
 import time
-#import matplotlib.pyplot as plt
-#import numpy
+import matplotlib.pyplot as plt
+import numpy
 import sys  #
 import os  # This library is for open file
 from os.path import dirname, abspath  # This library is for get the file path
 import re  # This library is for extract numbers from a string
-global TIme,Time1,Time2
 
 # Grids 1-5 are 2x2
 grid1 = [
@@ -389,6 +388,7 @@ def parse_command_line_arguments(argv, if_out):
     first variable is all arguemnts, Second is for output file, because there's a logical error
     '''
     global show_explain
+    global TIme,Time1,Time2
 
     show_explain = False
     show_file = False
