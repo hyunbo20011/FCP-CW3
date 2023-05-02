@@ -103,7 +103,7 @@ def star_pos(grid,n_rows,n_cols):
     for x in range(n):
         for y in range(n):
             if grid[x][y]==0:
-                return x,y
+                return x, y
 
 def get_next(grid,x,y,n_rows,n_cols):
     n=n_rows*n_cols
@@ -140,8 +140,9 @@ def solve(grid,n_rows,n_cols):
     Comment out one of the lines below to either use the random or recursive solver
     '''
     x, y = star_pos(grid,n_rows,n_cols)
-    solve_sudoku(grid, x,y,n_rows,n_cols)
+    #solve_sudoku(grid, x,y,n_rows,n_cols)
     #print(grid)
+    #grid = wavefront_solve(grid,n_rows,n_cols)
     for v in value(grid,x,y,n_rows,n_cols):
         grid[x][y]=v
         next_x,next_y=get_next(grid,x,y,n_rows,n_cols)
@@ -150,23 +151,22 @@ def solve(grid,n_rows,n_cols):
         return grid
 
 def wavefront_solve(grid, n_rows, n_cols):
-    #x, y = star_pos(grid,n_rows,n_cols)
     full_rows = len(grid)
-    full_cols = len(grid)
+    full_cols = len(grid[0])
     square_rows = full_rows / n_rows
     square_cols = full_cols / n_cols
 
     initial_list = []
     idx = 1
-    for r in range(n_rows):
-        for c in range(n_cols):
+    for x in range(n_rows):
+        for y in range(n_cols):
             initial_list.append(idx)
             idx = idx + 1
     
     for r in range(full_rows):
         for c in range(full_cols):
             if (grid[r][c] == 0):
-                avaliable_list = initial_list.copy()
+                avaliable_list = initial_list
                 
                 for row_element in grid[r]:
                     if (row_element in avaliable_list):
@@ -192,9 +192,9 @@ def wavefront_solve(grid, n_rows, n_cols):
                             avaliable_list.remove(grid[square_row_start + x][square_col_start + y])
                 
                 if (len(avaliable_list) == 1):
-                    grid[r][c] = avaliable_list[0]
-    
-    return solve(grid, n_rows, n_cols)
+                    grid[r][c] = int(avaliable_list[0])
+
+    return grid
 
 '''
 ===================================
@@ -213,9 +213,10 @@ def main():
         print("Solving grid: %d" % (i + 1))
         start_time = time.time()
         solution = wavefront_solve(grid,n_rows,n_cols)
+        solution = solve(solution,n_rows,n_cols)
         elapsed_time = time.time() - start_time
         print("Solved in: %f seconds" % elapsed_time)
-        # print(solution)
+        print(solution)
         if check_solution(solution, n_rows, n_cols):
             print("grid %d correct" % (i + 1))
             points = points + 10
