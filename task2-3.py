@@ -417,7 +417,7 @@ def plot(time,time1,time2):
         plt.title('Average solving time for different size grid')
         plt.show()
 
-MAX_FLAGS = 4
+MAX_FLAGS = 5
 
 
 def parse_command_line_arguments(argv, if_out):
@@ -436,12 +436,15 @@ def parse_command_line_arguments(argv, if_out):
     for name in argv[0:MAX_FLAGS]:
         if name =='--explain':
             list_flags.append(name)
+            position=position+1
         elif name== '--file':
             list_flags.append(name)
             file_position=position+1
+            position=position+1
         elif name=='--hint':
             list_flags.append(name)
             num_position=position+1
+            position=position+1
         else :
             position=position+1
     list_flags.sort()   
