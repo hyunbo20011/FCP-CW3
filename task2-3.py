@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import copy
 import time
@@ -431,17 +430,49 @@ def parse_command_line_arguments(argv, if_out):
     show_explain = False
     show_file = False
     show_hint =False
+    list_flags=[]
+    list_flags2=[]
+    position=0
+    for name in argv[0:MAX_FLAGS]:
+        if name =='--explain':
+            list_flags.append(name)
+        elif name== '--file':
+            list_flags.append(name)
+            file_position=position+1
+        elif name=='--hint':
+            list_flags.append(name)
+            num_position=position+1
+        else :
+            position=position+1
+    list_flags.sort()   
+    for each in list_flags:
+        list_flags2.append(each)
+        if each== '--file':
+            list_flags2.append(argv[file_position])
+        elif each=='--hint':
+            list_flags2.append(argv[num_position])
+    #print(list_flags2)
+   # print(argv[0:MAX_FLAGS])
+      
+            
+            
+    
+   # print(list_flags)
+    
+
+        
+        
     ######################Flag --profile#########################
-    if '--profile' in argv[0:MAX_FLAGS]:
+    if '--profile' in list_flags2:
         plot(Time2, Time1, Time)
 
     ######################Flag --Explain#########################
     # To check if 'explain' was passed as a console parameter
-    if '--explain' in argv[0:MAX_FLAGS]:
+    if '--explain' in list_flags2:
         show_explain = True
 
     ######################Flag --file#########################
-    if '--file' in argv[0:MAX_FLAGS] and if_out == 0:
+    if '--file' in list_flags2 and if_out == 0:
         show_file = True
         try:
             file_name_location = 0
@@ -464,7 +495,7 @@ def parse_command_line_arguments(argv, if_out):
             print("And please leave a space between '--file' and filename.")
             sys.exit()  # If file name is wrong, exit the program and print error message
 
-    elif '--file' in argv[0:MAX_FLAGS] and if_out == 1:
+    elif '--file' in list_flags2 and if_out == 1:
         if show_explain == False:
             output(solution, 0)  # For Task2-2 file output
         elif show_explain == True:
@@ -472,16 +503,16 @@ def parse_command_line_arguments(argv, if_out):
 
 
     ######################  Add flags below this line  #########################
-    if '--hint' in argv[0:MAX_FLAGS]:
+    hint_position = 0
+    if '--hint' in list_flags2:
         for i in argv[0:MAX_FLAGS]:
-            for num in range (10):
-                if i == str(num):
-                    hint_num=num
-                    show_hint = True
-                    #global num
-                else:
-                    show_hint = True
-                    continue
+            if i == '--hint':
+                break
+            else:
+                hint_position = hint_position + 1
+
+        hint_num = int(argv[hint_position + 1])
+        show_hint=True
         #show_grid= True
         #output(solution,)
     return (show_explain)  # Return this value to main funcion
