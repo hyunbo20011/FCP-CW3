@@ -394,7 +394,7 @@ def plot(time, time1, time2):
     plt.show()
 
 
-MAX_FLAGS = 4
+MAX_FLAGS = 5
 
 
 def parse_command_line_arguments(argv, if_out):
@@ -414,6 +414,7 @@ def parse_command_line_arguments(argv, if_out):
     for name in argv[0:MAX_FLAGS]:
         if name == '--profile':
             list_flags.append(name)
+<<<<<<< HEAD
             break
         if name == '--explain':
             list_flags.append(name)
@@ -426,6 +427,20 @@ def parse_command_line_arguments(argv, if_out):
         else:
             position = position + 1
     list_flags.sort()
+=======
+            position=position+1
+        elif name== '--file':
+            list_flags.append(name)
+            file_position=position+1
+            position=position+1
+        elif name=='--hint':
+            list_flags.append(name)
+            num_position=position+1
+            position=position+1
+        else :
+            position=position+1
+    list_flags.sort()   
+>>>>>>> 787b6839de65a4a2d605220cb341963753575057
     for each in list_flags:
         list_flags2.append(each)
         if each == '--file':
