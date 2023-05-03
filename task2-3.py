@@ -111,7 +111,9 @@ hard1 = [
     [0, 3, 1, 0, 0, 8, 0, 5, 7]]
 
 grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
-#grids1 = [(easy1, 3, 3),(easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
+
+
+#grids = [(easy1, 3, 3),(easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
 
 
 def check_section(section, n):
@@ -215,7 +217,7 @@ def explain(origin_grid, grid, xlen, ylen):  # Write explain function to make a 
     for x in range(1, xlen + 1):  # Set a range from 0 to end of the row
         for y in range(1, ylen + 1):  # set a range from 0 to end of the column
             if (origin_grid[x - 1][y - 1] == 0):  # Find an empty grid from the original and output the right answer
-                if grid[x - 1][y - 1] !=0:
+                if grid[x - 1][y - 1] != 0:
                     explain_sentance = f"put {grid[x - 1][y - 1]} in ({x}, {y})"
                     print(explain_sentance)
 
@@ -225,7 +227,8 @@ def explain(origin_grid, grid, xlen, ylen):  # Write explain function to make a 
     zero_position.append(zero_position_list)  # Add all sub-list to zero_position
     all_grid_explain.append(explanation)  # Add all sub-list to all_grid_explain
 
-def solve(grid, n_rows, n_cols, show_explain, show_hint):
+
+def solve(grid, n_rows, n_cols, show_explain, show_hint,show_profile):
     '''
     Solve function for Sudoku coursework.
     Comment out one of the lines below to either use the random or recursive solver
@@ -235,16 +238,32 @@ def solve(grid, n_rows, n_cols, show_explain, show_hint):
     full_col = len(grid[0])  # fill_col = Full length of the column
     origin_grid = [[grid[i][j] for j in range(full_col)] for i in
                    range(full_row)]  # Paste all the numbers in original grid
-
     x, y = star_pos(grid, n_rows, n_cols)
     solve_sudoku(grid, x, y, n_rows, n_cols)
-    if  show_hint == True:
-        if show_explain== True:
-            hint(grid, n_rows, n_cols,hint_num,origin_grid)
+    if show_profile==True:
+        Time = []
+        Time1 = []
+        Time2 = []
+
+        for (i, (grid, n_rows, n_cols)) in enumerate(grids):
+            print("Solving grid: %d" % (i + 1))
+            start_time = time.time()
+            solution = solve(grid, n_rows, n_cols, show_explain, show_hint)
+            elapsed_time = time.time() - start_time
+            if n_rows == 3 and n_cols == 3:
+                Time.append(elapsed_time)
+            elif n_rows == 2 and n_cols == 3:
+                Time1.append(elapsed_time)
+            elif n_rows == 2 and n_cols == 2:
+                Time2.append(elapsed_time)
+        plot(Time2, Time1, Time)
+    if show_hint == True:
+        if show_explain == True:
+            hint(grid, n_rows, n_cols, hint_num, origin_grid)
             if pass_explain == False:
                 explain(origin_grid, grid, full_row, full_col)
         else:
-            hint(grid, n_rows, n_cols,hint_num,origin_grid)
+            hint(grid, n_rows, n_cols, hint_num, origin_grid)
     elif show_hint == False:
         if show_explain == True:
             print(grid)
@@ -285,7 +304,7 @@ def find_grid_size(grid):  # Task2-2
     '''
     This function is used to find the size of grid.
     '''
-    global grid_row, grid_column, grids
+    global grid_row, grid_column
 
     if len(grid) == 4 and len(grid[0]) == 4:  # 2*2 grid
         grid_row = 2
@@ -329,93 +348,51 @@ def output(out_grid, explain):  # Task2-2
                 f.write('\n')
 
     f.close
-    
-def hint(grid, n_rows, n_cols,num,origin_grid): #task 2-3
-        nrow=0
-        
-        global pass_explain
-        pass_explain = False
-        grid_origin=[]
-        #print(grid)
-        n= n_rows*n_cols
-        if num <= 0 or num > n:
-            print('Error: the number is not in the grid')
-            pass_explain = True
-        else:
-            for row in origin_grid:
-                nrow=nrow+1
-                ncol=0
-                for col in row:
-                    ncol=ncol+1
-                    if col==0:
-                        local=[nrow,ncol]
-                        grid_origin.append(local)
-                    #print(grid_origin)
-        #print("Solving grid: %d" % (i + 1))
-            for no in grid_origin:
-                x=no[0]
-                y=no[1]
-                if grid[x-1][y-1] == num:
-                    continue
-                else:
-                    grid[x-1][y-1]=0
-            print(grid)
-        #return True
-def plot(time,time1,time2):
-    if len(time)==0 and len(time1)==0:
-        timeaverage = {'2*2 grid': sum(time) ,
-                       '2*3 grid': sum(time1) ,
-                       '3*3 grid': sum(time2) / len(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
-    elif len(time)==0 and len(time2)==0:
-        timeaverage = {'2*2 grid': sum(time),
-                       '2*3 grid': sum(time1) / len(time1),
-                       '3*3 grid': sum(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
-    elif len(time1)==0 and len(time2)==0:
-        timeaverage = {'2*2 grid': sum(time)/len(time),
-                       '2*3 grid': sum(time1) ,
-                       '3*3 grid': sum(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
-    elif len(time)==0:
-        timeaverage = {'2*2 grid': sum(time),
-                       '2*3 grid': sum(time1) / len(time1),
-                       '3*3 grid': sum(time2)/len(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
-    elif len(time1)==0:
-        timeaverage = {'2*2 grid': sum(time)/len(time),
-                       '2*3 grid': sum(time1),
-                       '3*3 grid': sum(time2) / len(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
-    elif len(time2)==0:
-        timeaverage = {'2*2 grid': sum(time) / len(time),
-                       '2*3 grid': sum(time1) / len(time1),
-                       '3*3 grid': sum(time2)}
-        plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
-        plt.xlabel('size')
-        plt.ylabel('time(s)')
-        plt.title('Average solving time for different size grid')
-        plt.show()
+
+
+def hint(grid, n_rows, n_cols, num, origin_grid):  # task 2-3
+    nrow = 0
+
+    global pass_explain
+    pass_explain = False
+    grid_origin = []
+    # print(grid)
+    n = n_rows * n_cols
+    if num <= 0 or num > n:
+        print('Error: the number is not in the grid')
+        pass_explain = True
+    else:
+        for row in origin_grid:
+            nrow = nrow + 1
+            ncol = 0
+            for col in row:
+                ncol = ncol + 1
+                if col == 0:
+                    local = [nrow, ncol]
+                    grid_origin.append(local)
+                # print(grid_origin)
+        # print("Solving grid: %d" % (i + 1))
+        for no in grid_origin:
+            x = no[0]
+            y = no[1]
+            if grid[x - 1][y - 1] == num:
+                continue
+            else:
+                grid[x - 1][y - 1] = 0
+        print(grid)
+    # return True
+
+
+def plot(time, time1, time2):
+    timeaverage = {'2*2 grid': sum(time) / len(time),
+                   '2*3 grid': sum(time1) / len(time1),
+                   '3*3 grid': sum(time2) / len(time2)}
+    plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue'])
+    plt.xlabel('size')
+    plt.ylabel('time(s)')
+    plt.title('Average solving time for different size grid')
+    plt.show()
+
 
 MAX_FLAGS = 4
 
@@ -425,46 +402,46 @@ def parse_command_line_arguments(argv, if_out):
     Function that interpret input parameter from console
     first variable is all arguemnts, Second is for output file, because there's a logical error
     '''
-    global show_explain,show_hint,hint_num
+    global show_explain, show_hint, hint_num, show_profile
 
+    show_profile=False
     show_explain = False
     show_file = False
-    show_hint =False
-    list_flags=[]
-    list_flags2=[]
-    position=0
+    show_hint = False
+    list_flags = []
+    list_flags2 = []
+    position = 0
     for name in argv[0:MAX_FLAGS]:
-        if name =='--explain':
+        if name == '--profile':
             list_flags.append(name)
-        elif name== '--file':
+            break
+        if name == '--explain':
             list_flags.append(name)
-            file_position=position+1
-        elif name=='--hint':
+        elif name == '--file':
             list_flags.append(name)
-            num_position=position+1
-        else :
-            position=position+1
-    list_flags.sort()   
+            file_position = position + 1
+        elif name == '--hint':
+            list_flags.append(name)
+            num_position = position + 1
+        else:
+            position = position + 1
+    list_flags.sort()
     for each in list_flags:
         list_flags2.append(each)
-        if each== '--file':
+        if each == '--file':
             list_flags2.append(argv[file_position])
-        elif each=='--hint':
+        elif each == '--hint':
             list_flags2.append(argv[num_position])
-    #print(list_flags2)
-   # print(argv[0:MAX_FLAGS])
-      
-            
-            
-    
-   # print(list_flags)
-    
+    print(list_flags2)
+    # print(argv[0:MAX_FLAGS])
 
-        
-        
+    # print(list_flags)
+
     ######################Flag --profile#########################
     if '--profile' in list_flags2:
-        plot(Time2, Time1, Time)
+        return show_profile==True
+
+
 
     ######################Flag --Explain#########################
     # To check if 'explain' was passed as a console parameter
@@ -501,7 +478,6 @@ def parse_command_line_arguments(argv, if_out):
         elif show_explain == True:
             output(solution, all_grid_explain)
 
-
     ######################  Add flags below this line  #########################
     hint_position = 0
     if '--hint' in list_flags2:
@@ -512,9 +488,9 @@ def parse_command_line_arguments(argv, if_out):
                 hint_position = hint_position + 1
 
         hint_num = int(argv[hint_position + 1])
-        show_hint=True
-        #show_grid= True
-        #output(solution,)
+        show_hint = True
+        # show_grid= True
+        # output(solution,)
     return (show_explain)  # Return this value to main funcion
 
 
@@ -528,33 +504,24 @@ def main(args):
     print("Running test script for coursework 1")
     print("====================================")
 
-    Time = []
-    Time1 = []
-    Time2 = []
-
+    if show_profile==True:
+        grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3),
+                 (easy1, 3, 3), (easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
         start_time = time.time()
-        solution = solve(grid, n_rows, n_cols, show_explain, show_hint)
+        solution = solve(grid, n_rows, n_cols, show_explain, show_hint,show_profile)
         elapsed_time = time.time() - start_time
-        if n_rows==3 and n_cols==3:
-            Time.append(elapsed_time)
-        elif n_rows==2 and n_cols==3:
-            Time1.append(elapsed_time)
-        elif n_rows==2 and n_cols==2:
-            Time2.append(elapsed_time)
         print("Solved in: %f seconds" % elapsed_time)
-        if show_hint== False:
+        if show_hint == False:
             if check_solution(solution, n_rows, n_cols):
                 print("grid %d correct" % (i + 1))
                 points = points + 10
             else:
                 print("grid %d incorrect" % (i + 1))
 
-
     print("====================================")
-    if show_hint== False:
-    
+    if show_hint == False:
         print("Test script complete, Total points: %d" % points)
 
     parse_command_line_arguments(args, 1)  # receiving parameters, first variable is all arguemnts
@@ -562,5 +529,5 @@ def main(args):
 
 
 if __name__ == "__main__":
-    #hint(5)
-    main(sys.argv[1:]) # To get flags
+    # hint(5)
+    main(sys.argv[1:])  # To get flags
