@@ -256,22 +256,22 @@ def solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile):
                    range(full_row)]  # Paste all the numbers in original grid
     x, y = star_pos(grid, n_rows, n_cols)
     solve_sudoku(grid, x, y, n_rows, n_cols)
-    if show_profile == True:
+    if show_profile == True:#just run --profile and pass others
         return grid
     if show_hint == True:
-        if show_explain == True:
+        if show_explain == True:#run --hint when -- explain is in the flags
             hint(grid, n_rows, n_cols, hint_num, origin_grid)
-            if pass_explain == False:
+            if pass_explain == False:#run --expalin when hint is correct running
                 explain(origin_grid, grid, full_row, full_col)
-        else:
+        else:#run --hint only
             hint(grid, n_rows, n_cols, hint_num, origin_grid)
-    elif show_hint == False:
+    elif show_hint == False:#run --explain only
         if show_explain == True:
             print(grid)
             explain(origin_grid, grid, full_row, full_col)  # To make a explain flag
-        else:
+        else:#print grid
             print(grid)
-    origin_grid.clear()
+    origin_grid.clear()#clear the list
 
     return grid
 
