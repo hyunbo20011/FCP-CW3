@@ -217,6 +217,9 @@ def solve_sudoku(grid, x, y, n_rows, n_cols):
         else:
             grid[x][y] = 0
 
+'''
+Function of explain flag written by Logan. This is task 2-1.
+'''
 
 zero_position = []  # This list contain all 0 position for each grid in each sub-list, it's add from function "explain"
 all_grid_explain = []  # This list contain explanations for all grids
@@ -250,7 +253,7 @@ def solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile):
     Comment out one of the lines below to either use the random or recursive solver
     '''
 
-    full_row = len(grid)  # full_row = Full length of the row
+    full_row = len(grid)  # full_row = Full length of the row  --- Written by Logan to make explain flag work.
     full_col = len(grid[0])  # fill_col = Full length of the column
     origin_grid = [[grid[i][j] for j in range(full_col)] for i in
                    range(full_row)]  # Paste all the numbers in original grid
@@ -553,6 +556,9 @@ def solve1(grid, n_rows, n_cols):
 
     return random_solve(grid, n_rows, n_cols)
 
+'''
+Task 3 by Logan
+'''
 
 def wavefront_solve(grid, n_rows, n_cols):
     full_rows = n_rows * n_cols
@@ -562,6 +568,7 @@ def wavefront_solve(grid, n_rows, n_cols):
 
     origin_grid = copy.deepcopy(grid)
 
+    #Initialize initial list
     initial_list = []
     idx = 1
     for x in range(n_rows):
@@ -570,23 +577,25 @@ def wavefront_solve(grid, n_rows, n_cols):
             idx = idx + 1
 
     r = 0
-    available_list = {}
+    available_list = {} #Dictionary of available list, key = coords // value = list
     while r < full_rows:
         for c in range(full_cols):
-            if (grid[r][c] == 0):
-                if (r, c) not in available_list:
-                    available_list[(r, c)] = copy.deepcopy(initial_list)
+            if (grid[r][c] == 0): #if element is empty
+                if (r, c) not in available_list: #if value for this coords are not initialized in dictionary
+                    available_list[(r, c)] = copy.deepcopy(initial_list) #deep copy initial list
 
+                #Eliminate matching numbers from same row
                 for row_element in grid[r]:
                     if (row_element in available_list[(r, c)]):
                         available_list[(r, c)].remove(row_element)
-
+                
+                #Eliminate matching numbers from same column
                 col_list = [col[c] for col in grid]
-
                 for col_element in col_list:
                     if (col_element in available_list[(r, c)]):
                         available_list[(r, c)].remove(col_element)
-
+                
+                #Calculations to find the right square coords locates in
                 square_row_idx = 0
                 if (r >= n_rows):
                     square_row_idx = (int)(r / square_rows)
@@ -597,15 +606,17 @@ def wavefront_solve(grid, n_rows, n_cols):
                 square_row_start = square_row_idx * n_rows
                 square_col_start = square_col_idx * n_cols
 
+                #Eliminate matching numbers from same square
                 for x in range(n_rows):
                     for y in range(n_cols):
                         if (grid[square_row_start + x][square_col_start + y] != 0 and grid[square_row_start + x][
                             square_col_start + y] in available_list[(r, c)]):
                             available_list[(r, c)].remove(grid[square_row_start + x][square_col_start + y])
-
+                
+                 #If there is only one available number, it is the right number for this element
                 if (len(available_list[(r, c)]) == 1):
                     grid[r][c] = available_list[(r, c)][0]
-
+        #When iteration is over but grid is not solved yet
         if (r >= full_rows - 1 and not check_solution(grid, n_rows, n_cols)):
             min_len = full_rows * full_cols + 1
             match = (int, int)
@@ -613,19 +624,22 @@ def wavefront_solve(grid, n_rows, n_cols):
                 if min_len > len(available_list[key]):
                     match = key
                     min_len = len(available_list[key])
+            #If all available list is empty, consider it unsolvable by this method
             if (min_len == 0):
                 break
-
             x, y = match
+
+            #Choose the location with the cmallest number of possible values, select one randomly(in this case 0th element) and begin eliminating again
             grid[x][y] = available_list[match][0]
             del available_list[match]
             r = 0
         else:
             r = r + 1
-
+    #If it is unsolvable, go for the former solve method
     if (check_solution(grid, n_rows, n_cols)):  # If grid is complete, print grid and return it
         print(grid)
         return grid
+    
     else:  # If solving is blocked, execute default solver and return its result
         grid = solve(origin_grid, n_rows, n_cols, False, False, False)
         return grid
