@@ -9,7 +9,6 @@ import os  # This library is for open file
 from os.path import dirname, abspath  # This library is for get the file path
 import re  # This library is for extract numbers from a string
 
-
 # Grids 1-5 are 2x2
 grid1 = [
     [1, 0, 4, 2],
@@ -163,6 +162,11 @@ def check_solution(grid, n_rows, n_cols):
 
 
 def star_pos(grid, n_rows, n_cols):
+    '''
+    This function aim to find the first '0' position in grid
+    args: grid, n_rows, n_cols
+    return: the first '0' position
+    '''
     n = n_rows * n_cols
     for x in range(n):
         for y in range(n):
@@ -171,6 +175,11 @@ def star_pos(grid, n_rows, n_cols):
 
 
 def get_next(grid, x, y, n_rows, n_cols):
+    '''
+    This function is to find the next '0' position until all the '0' position is found
+    args: grid, x, y, n_rows, n_cols
+    return: -1,-1
+    '''
     n = n_rows * n_cols
     for next_y in range(y + 1, n):
         if grid[x][next_y] == 0:
@@ -183,6 +192,11 @@ def get_next(grid, x, y, n_rows, n_cols):
 
 
 def value(grid, x, y, n_rows, n_cols):
+    '''
+    This function is to find each square in grid
+    args: grid, x, y, n_rows, n_cols
+    return: every square in grid
+    '''
     n = n_rows * n_cols
     i, j = x // n_rows, y // n_cols
     box = [grid[i * n_rows + r][j * n_cols + c] for r in range(n_rows) for c in range(n_cols)]
@@ -191,6 +205,9 @@ def value(grid, x, y, n_rows, n_cols):
 
 
 def solve_sudoku(grid, x, y, n_rows, n_cols):
+    '''
+    Solve function for Sudoku coursework.
+    '''
     for grid[x][y] in value(grid, x, y, n_rows, n_cols):
         next_x, next_y = get_next(grid, x, y, n_rows, n_cols)
         if next_y == -1:
@@ -307,7 +324,7 @@ def find_grid_size(grid):  # Task2-2
 
 def output(out_grid, explain):  # Task2-2
     '''
-    This function is output the finall solution into
+    This function is output the final solution into
     '''
     out_filename = "Output_for_'" + in_filename + "'.txt"  # Combine old file name and 'Output of'
 
@@ -367,17 +384,22 @@ def hint(grid, n_rows, n_cols, num, origin_grid):  # task 2-3
     # return True
 
 
-def plot(time, time1, time2,time3,time4,time5):
-    timeaverage = {'2*2 grid self-solver': sum(time) / len(time),
-                   '2*3 grid self-solver': sum(time1) / len(time1),
-                   '3*3 grid self-solver': sum(time2) / len(time2),
+def plot(time, time1, time2, time3, time4, time5): # task 2-4
+    '''
+    This function plot the graph of average solving time to compare two different solver performance
+    '''
+    # The dictionary contain graph keys and values of average solving time
+    timeaverage = {'2*2 grid default solver': sum(time) / len(time),
+                   '2*3 grid default solver': sum(time1) / len(time1),
+                   '3*3 grid default solver': sum(time2) / len(time2),
                    '2*2 grid random solver': sum(time3) / len(time3),
                    '2*3 grid random solver': sum(time4) / len(time4),
                    '3*3 grid random solver': sum(time5) / len(time5)}
-    plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue','yellow','green','blue'])
-    plt.xlabel('size')
-    plt.ylabel('time(s)')
-    plt.title('Average solving time for different size grid')
+    # bar plot to compare these two solvers' performance
+    plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue', 'yellow', 'green', 'blue'])
+    plt.xlabel('size & solver') # x-label of the plot
+    plt.ylabel('Average time(s)') # y-label of the plot
+    plt.title('Average solving time for different size grids by two different solving method') # title of the plot
     plt.show()
 
 
@@ -424,16 +446,13 @@ def parse_command_line_arguments(argv, if_out):
         elif each == '--hint':
             list_flags2.append(argv[num_position])
     print(list_flags2)
-    # print(argv[0:MAX_FLAGS])
-
-    # print(list_flags)
 
     ######################Flag --profile#########################
+    # To check if 'profile' was passed as a console parameter
     if '--profile' in list_flags2:
         show_profile = True
         grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3),
-                     (easy1, 3, 3), (easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
-        #print(show_profile, grids)
+                 (easy1, 3, 3), (easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
         return
 
     ######################Flag --Explain#########################
@@ -486,6 +505,7 @@ def parse_command_line_arguments(argv, if_out):
         # output(solution,)
     return (show_explain)  # Return this value to main funcion
 
+
 def random_solve(grid, n_rows, n_cols, max_tries=50000):
     '''
     This function uses random trial and error to solve a Sudoku grid
@@ -527,10 +547,10 @@ def fill_board_randomly(grid, n_rows, n_cols):
 def solve1(grid, n_rows, n_cols):
     '''
     Solve function for Sudoku coursework.
-    Comment out one of the lines below to either use the random or recursive solver
     '''
 
     return random_solve(grid, n_rows, n_cols)
+
 
 def wavefront_solve(grid, n_rows, n_cols):
     full_rows = n_rows * n_cols
@@ -546,7 +566,7 @@ def wavefront_solve(grid, n_rows, n_cols):
         for y in range(n_cols):
             initial_list.append(idx)
             idx = idx + 1
-    
+
     r = 0
     available_list = {}
     while r < full_rows:
@@ -554,11 +574,11 @@ def wavefront_solve(grid, n_rows, n_cols):
             if (grid[r][c] == 0):
                 if (r, c) not in available_list:
                     available_list[(r, c)] = copy.deepcopy(initial_list)
-                
+
                 for row_element in grid[r]:
                     if (row_element in available_list[(r, c)]):
                         available_list[(r, c)].remove(row_element)
-                        
+
                 col_list = [col[c] for col in grid]
 
                 for col_element in col_list:
@@ -574,12 +594,13 @@ def wavefront_solve(grid, n_rows, n_cols):
 
                 square_row_start = square_row_idx * n_rows
                 square_col_start = square_col_idx * n_cols
-                
+
                 for x in range(n_rows):
                     for y in range(n_cols):
-                        if (grid[square_row_start + x][square_col_start + y] != 0 and grid[square_row_start + x][square_col_start + y] in available_list[(r, c)]):
+                        if (grid[square_row_start + x][square_col_start + y] != 0 and grid[square_row_start + x][
+                            square_col_start + y] in available_list[(r, c)]):
                             available_list[(r, c)].remove(grid[square_row_start + x][square_col_start + y])
-                
+
                 if (len(available_list[(r, c)]) == 1):
                     grid[r][c] = available_list[(r, c)][0]
 
@@ -592,7 +613,7 @@ def wavefront_solve(grid, n_rows, n_cols):
                     min_len = len(available_list[key])
             if (min_len == 0):
                 break
-            
+
             x, y = match
             grid[x][y] = available_list[match][0]
             del available_list[match]
@@ -600,12 +621,13 @@ def wavefront_solve(grid, n_rows, n_cols):
         else:
             r = r + 1
 
-    if (check_solution(grid, n_rows, n_cols)): #If grid is complete, print grid and return it
+    if (check_solution(grid, n_rows, n_cols)):  # If grid is complete, print grid and return it
         print(grid)
         return grid
-    else: #If solving is blocked, execute default solver and return its result
+    else:  # If solving is blocked, execute default solver and return its result
         grid = solve(origin_grid, n_rows, n_cols, False, False, False)
         return grid
+
 
 def main(args):
     global solution, grids
@@ -620,13 +642,13 @@ def main(args):
     Time = []
     Time1 = []
     Time2 = []
-    Time3 =[]
-    Time4 =[]
-    Time5 =[]
+    Time3 = []
+    Time4 = []
+    Time5 = []
 
-    #print(grids)
+    # print(grids)
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
-        #print("Solving grid: %d" % (i + 1))
+        # print("Solving grid: %d" % (i + 1))
         start_time = time.time()
         solution = solve1(grid, n_rows, n_cols)
         elapsed_time = time.time() - start_time
@@ -636,11 +658,11 @@ def main(args):
             Time4.append(elapsed_time)
         elif n_rows == 3 and n_cols == 3:
             Time5.append(elapsed_time)
-        #print("Solved in: %f seconds" % elapsed_time)
+        # print("Solved in: %f seconds" % elapsed_time)
 
     for (i, (grid, n_rows, n_cols)) in enumerate(grids):
         print("Solving grid: %d" % (i + 1))
-        #If no flag is active, execute wavefront solve function
+        # If no flag is active, execute wavefront solve function
         if (not show_explain and not show_hint and not show_profile):
             start_time = time.time()
             solution = wavefront_solve(copy.deepcopy(grid), n_rows, n_cols)
@@ -649,29 +671,27 @@ def main(args):
         start_time = time.time()
         solution = solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile)
         elapsed_time = time.time() - start_time
-        print("The Default solver in Task 1 solve this grid in: %f seconds" % elapsed_time,'\n\n')
-        
+        print("The Default solver in Task 1 solve this grid in: %f seconds" % elapsed_time, '\n\n')
+
         if n_rows == 3 and n_cols == 3:
             Time.append(elapsed_time)
         elif n_rows == 2 and n_cols == 3:
             Time1.append(elapsed_time)
         elif n_rows == 2 and n_cols == 2:
             Time2.append(elapsed_time)
-        #print("Solved in: %f seconds" % elapsed_time)
-        
+
         if show_hint == False:
             if check_solution(solution, n_rows, n_cols):
                 points = points + 10
             if show_profile == True:
                 if check_solution(solution, n_rows, n_cols):
                     print("grid %d correct" % (i + 1))
-                    #points = points + 10
                 else:
                     print("grid %d incorrect" % (i + 1))
 
     print("====================================")
     if show_profile == True:
-        plot(Time2, Time1, Time,Time3,Time4,Time5)
+        plot(Time2, Time1, Time, Time3, Time4, Time5)
     if show_hint == False:
         print("Test script complete, Total points: %d" % points)
 
@@ -680,5 +700,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    # hint(5)
     main(sys.argv[1:])  # To get flags
