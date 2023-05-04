@@ -41,4 +41,4 @@ etc.
 
 3. --hint: This flag allows you to input a number, the program will show the grid which has filled the number you inputed. Also this flag can used with the --file and --explain, the --explain will show the number will be filled in where, and with the flag of --file can choose the grid by yourself. For example, when you input --hint 3(leave a space between "--hint" and "number"), it will output the grid after filled 3. 
 
-4. --profile：This flag is using to plot a gragh to compare two different solver's average solving time for different size of grids(i.e. 2*2,2*3,3*3). If this flag running, the other three flags is ignored automaticly. It will not interact with other three flags.
+4. --profile：This flag is using to plot a gragh to compare two different solver's average solving time for different size of grids(i.e. 2*2,2*3,3*3). If this flag running, the other three flags is ignored automaticly. It will not interact with other three flags. When you use this flag, the amount of calculation of this program will be very large, and the running time may be up to 30s. Please wait patiently. After our test, there is no bug.
