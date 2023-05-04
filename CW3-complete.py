@@ -9,6 +9,7 @@ import os  # This library is for open file
 from os.path import dirname, abspath  # This library is for get the file path
 import re  # This library is for extract numbers from a string
 
+
 # Grids 1-5 are 2x2
 grid1 = [
     [1, 0, 4, 2],
@@ -605,7 +606,7 @@ def wavefront_solve(grid, n_rows, n_cols):
             r = r + 1
 
     if (check_solution(grid, n_rows, n_cols)): #If grid is complete, print grid and return it
-        #print(grid)
+        print(grid)
         return grid
     else: #If solving is blocked, execute default solver and return its result
         grid = solve(origin_grid, n_rows, n_cols, False, False, False)
@@ -619,7 +620,7 @@ def main(args):
     # Second is for output file, because there's a logical error
 
     print("Running test script for coursework 3")
-    print("====================================")
+    print("====================================\n")
 
     Time = []
     Time1 = []
@@ -653,7 +654,7 @@ def main(args):
         start_time = time.time()
         solution = solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile)
         elapsed_time = time.time() - start_time
-        print("The Default solver solve this grid in: %f seconds" % elapsed_time,'\n\n')
+        print("The Default solver in Task 1 solve this grid in: %f seconds" % elapsed_time,'\n\n')
         
         if n_rows == 3 and n_cols == 3:
             Time.append(elapsed_time)
