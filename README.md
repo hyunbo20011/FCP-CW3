@@ -41,4 +41,4 @@ etc.
 
 3.--hint:
 
-4.--profile
+4.--profile：This flag is using to plot a gragh to compare two different solver's average solving time for different size of grids(i.e. 2*2,2*3,3*3). If this flag running, the other three flags is ignored automaticly. It will not interact with other three flags.
