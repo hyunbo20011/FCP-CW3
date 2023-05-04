@@ -114,8 +114,6 @@ hard1 = [
 
 grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
 
-#grids = [(easy1, 3, 3),(easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
-
 
 def check_section(section, n):
     if len(set(section)) == len(section) and sum(section) == sum([i for i in range(n + 1)]):
@@ -579,9 +577,6 @@ def wavefront_solve(grid, n_rows, n_cols):
                 
                 for x in range(n_rows):
                     for y in range(n_cols):
-                        #print('111111111', grid,x,y,square_row_start,square_col_start)
-                        #print('222222222', grid[square_row_start + x][square_col_start + y-1])
-                        #print('333333333', available_list[(r, c)])
                         if (grid[square_row_start + x][square_col_start + y] != 0 and grid[square_row_start + x][square_col_start + y] in available_list[(r, c)]):
                             available_list[(r, c)].remove(grid[square_row_start + x][square_col_start + y])
                 
