@@ -605,7 +605,7 @@ def wavefront_solve(grid, n_rows, n_cols):
             r = r + 1
 
     if (check_solution(grid, n_rows, n_cols)): #If grid is complete, print grid and return it
-        print(grid)
+        #print(grid)
         return grid
     else: #If solving is blocked, execute default solver and return its result
         grid = solve(origin_grid, n_rows, n_cols, False, False, False)
@@ -618,7 +618,7 @@ def main(args):
     show_explain = parse_command_line_arguments(args, 0)  # receiving parameters, first variable is all arguemnts
     # Second is for output file, because there's a logical error
 
-    print("Running test script for coursework 1")
+    print("Running test script for coursework 3")
     print("====================================")
 
     Time = []
@@ -649,11 +649,11 @@ def main(args):
             start_time = time.time()
             solution = wavefront_solve(copy.deepcopy(grid), n_rows, n_cols)
             elapsed_time = time.time() - start_time
-            print("Wavefront - Solved in: %f seconds" % elapsed_time)
+            print("The Wavefront solver solve this grid in: %f seconds" % elapsed_time)
         start_time = time.time()
         solution = solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile)
         elapsed_time = time.time() - start_time
-        print("Default - Solved in: %f seconds" % elapsed_time)
+        print("The Default solver solve this grid in: %f seconds" % elapsed_time,'\n\n')
         
         if n_rows == 3 and n_cols == 3:
             Time.append(elapsed_time)
@@ -662,6 +662,7 @@ def main(args):
         elif n_rows == 2 and n_cols == 2:
             Time2.append(elapsed_time)
         #print("Solved in: %f seconds" % elapsed_time)
+        
         if show_hint == False:
             if check_solution(solution, n_rows, n_cols):
                 points = points + 10
