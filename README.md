@@ -39,6 +39,6 @@ etc.
 
 2. --file: This flag allows you to input a file from folder "grids", you can use it like this: "python CW3.py --file filename". Please input the right filename(include extension if the file have), and leave a space between "--file" and "filename". Don't worry, the program will tell you if you make a mistake. And it will output the right answer and explanation (if you use --explain) to folder "output". It will interact with other flags.
 
-3.--hint:
+3.--hint: This flag allows you to input a number, the program will show the grid which have filled the number you inputed. Also this flag can used with the --file and --explain, the --explain will show the number will be filled in where, and with the flag of --file can choose the grid by yourself. For example, when you input --hint 3(leave a space between "--hint" and "number"), it will output the grid after filled 3. 
 
 4.--profile：This flag is using to plot a gragh to compare two different solver's average solving time for different size of grids(i.e. 2*2,2*3,3*3). If this flag running, the other three flags is ignored automaticly. It will not interact with other three flags.
