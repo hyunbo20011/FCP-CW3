@@ -352,28 +352,31 @@ def output(out_grid, explain):  # Task2-2
 
 
 def hint(grid, n_rows, n_cols, num, origin_grid):  # task 2-3
+    '''
+    This function is used to find the grid after filled with number
+    '''
     nrow = 0
 
-    global pass_explain
+    global pass_explain #need to pass explain or not
     pass_explain = False
-    grid_origin = []
+    grid_origin = []#the list used to record the position of 0
     # print(grid)
-    n = n_rows * n_cols
-    if num <= 0 or num > n:
-        print('Error: the number is not in the grid')
-        pass_explain = True
-    else:
+    n = n_rows * n_cols#the maximum number can be filled in the grid
+    if num <= 0 or num > n:#make sure the number inputed is in the true reange of the number can be filled in the grid
+        print('Error: the number is not in the grid')#return the number is large than the maximum number can be filled in the grid
+        pass_explain = True#pass expalin
+    else:#find the positions of 0
         for row in origin_grid:
             nrow = nrow + 1
             ncol = 0
             for col in row:
                 ncol = ncol + 1
                 if col == 0:
-                    local = [nrow, ncol]
+                    local = [nrow, ncol]#the position of 0
                     grid_origin.append(local)
                 # print(grid_origin)
         # print("Solving grid: %d" % (i + 1))
-        for no in grid_origin:
+        for no in grid_origin:#make sure the number have filled in the grid is the same as the hint number
             x = no[0]
             y = no[1]
             if grid[x - 1][y - 1] == num:
@@ -417,33 +420,33 @@ def parse_command_line_arguments(argv, if_out):
     show_explain = False
     show_file = False
     show_hint = False
-    list_flags = []
-    list_flags2 = []
-    position = 0
+    list_flags = []#to record all flags
+    list_flags2 = []#to record the flags afther change positions
+    position = 0#position number
     for name in argv[0:MAX_FLAGS]:
-        if name == '--profile':
+        if name == '--profile':#if the profile is in the flags, just run profile and pss all other flags
             list_flags.clear()
             list_flags.append(name)
             break
         if name == '--explain':
             list_flags.append(name)
             position = position + 1
-        elif name == '--file':
+        elif name == '--file':#if the name equals --file, record the file position
             list_flags.append(name)
             file_position = position + 1
             position = position + 1
-        elif name == '--hint':
+        elif name == '--hint':#if the name.equals --hint, record the hint number position
             list_flags.append(name)
             num_position = position + 1
             position = position + 1
         else:
-            position = position + 1
-    list_flags.sort()
+            position = position + 1#keep the position is correct
+    list_flags.sort()#make the flags in a arrangemnet which can run
     for each in list_flags:
         list_flags2.append(each)
-        if each == '--file':
+        if each == '--file':#when added --file, add the file name
             list_flags2.append(argv[file_position])
-        elif each == '--hint':
+        elif each == '--hint':#when added --hint, add the hint number
             list_flags2.append(argv[num_position])
     print(list_flags2)
     ######################Flag --profile#########################
@@ -492,7 +495,7 @@ def parse_command_line_arguments(argv, if_out):
     ######################Flag --hint#########################
     hint_position = 0
     if '--hint' in list_flags2:
-        for i in argv[0:MAX_FLAGS]:
+        for i in argv[0:MAX_FLAGS]:#find the position of hint number
             if i == '--hint':
                 break
             else:
