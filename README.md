@@ -28,13 +28,13 @@
 ......
 etc.
 
-4. If you you not using flag, you will see the 6 solved grids printed in the terminal,  the running time of CW2 solver (it shows as Default solver) and the running time of Wavefront solver.
+4. If you not using flag, you will see the 6 solved grids printed in the terminal,  the running time of CW2 solver (it shows as Default solver) and the running time of Wavefront solver.
 
 5. If you want to use flags, please take a look at the introduction below.
 
 
 
-· Introduction of flags:
+· Introduction of flags (No input order restriction):
 1. --explain: This flag is using to tell you how to fill the original Sudoku into a completed Sudoku , it will interact with other flags.
 
 2. --file: This flag allows you to input a file from folder "grids", you can use it like this: "python CW3.py --file filename". Please input the right filename(include extension if the file have), and leave a space between "--file" and "filename". Don't worry, the program will tell you if you make a mistake. And it will output the right answer and explanation (if you use --explain) to folder "output". It will interact with other flags.
