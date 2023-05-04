@@ -423,7 +423,7 @@ def parse_command_line_arguments(argv, if_out):
             list_flags2.append(argv[file_position])
         elif each == '--hint':
             list_flags2.append(argv[num_position])
-    print(list_flags2)
+    #print(list_flags2)
     # print(argv[0:MAX_FLAGS])
 
     # print(list_flags)
