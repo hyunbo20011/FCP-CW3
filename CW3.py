@@ -111,11 +111,13 @@ hard1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 3, 1, 0, 0, 8, 0, 5, 7]]
 
-grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
+grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2),
+         (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3)]
 
 
 def check_section(section, n):
-    if len(set(section)) == len(section) and sum(section) == sum([i for i in range(n + 1)]):
+    if len(set(section)) == len(section) and sum(
+            section) == sum([i for i in range(n + 1)]):
         return True
     return False
 
@@ -199,8 +201,10 @@ def value(grid, x, y, n_rows, n_cols):
     '''
     n = n_rows * n_cols
     i, j = x // n_rows, y // n_cols
-    box = [grid[i * n_rows + r][j * n_cols + c] for r in range(n_rows) for c in range(n_cols)]
-    v = set([x for x in range(1, n + 1)]) - set(box) - set(grid[x]) - set(list(zip(*grid))[y])
+    box = [grid[i * n_rows + r][j * n_cols + c]
+           for r in range(n_rows) for c in range(n_cols)]
+    v = set([x for x in range(1, n + 1)]) - set(box) - \
+        set(grid[x]) - set(list(zip(*grid))[y])
     return list(v)
 
 
@@ -217,6 +221,7 @@ def solve_sudoku(grid, x, y, n_rows, n_cols):
         else:
             grid[x][y] = 0
 
+
 '''
 Function of explain flag written by Logan. This is task 2-1.
 '''
@@ -225,7 +230,8 @@ zero_position = []  # This list contain all 0 position for each grid in each sub
 all_grid_explain = []  # This list contain explanations for all grids
 
 
-# origin_grid=original grid shown at the beginning, grid = Solved(Filled the grid instead of 0, xlen=Length of Row, ylen=Length of column )
+# origin_grid=original grid shown at the beginning, grid = Solved(Filled
+# the grid instead of 0, xlen=Length of Row, ylen=Length of column )
 def explain(origin_grid, grid, xlen, ylen):  # Write explain function to make a flag
     '''
     The reason I use for loop twice is to find a right answer by using all the numbers
@@ -235,7 +241,8 @@ def explain(origin_grid, grid, xlen, ylen):  # Write explain function to make a 
     explanation = []  # This list is use for contain explanation sentence for each grid
     for x in range(1, xlen + 1):  # Set a range from 0 to end of the row
         for y in range(1, ylen + 1):  # set a range from 0 to end of the column
-            if (origin_grid[x - 1][y - 1] == 0):  # Find an empty grid from the original and output the right answer
+            # Find an empty grid from the original and output the right answer
+            if (origin_grid[x - 1][y - 1] == 0):
                 if grid[x - 1][y - 1] != 0:
                     explain_sentance = f"put {grid[x - 1][y - 1]} in ({x}, {y})"
                     print(explain_sentance)
@@ -243,8 +250,10 @@ def explain(origin_grid, grid, xlen, ylen):  # Write explain function to make a 
                     zero_position_list.append((x, y))
                     explanation.append(explain_sentance)
 
-    zero_position.append(zero_position_list)  # Add all sub-list to zero_position
-    all_grid_explain.append(explanation)  # Add all sub-list to all_grid_explain
+    # Add all sub-list to zero_position
+    zero_position.append(zero_position_list)
+    # Add all sub-list to all_grid_explain
+    all_grid_explain.append(explanation)
 
 
 def solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile):
@@ -253,28 +262,31 @@ def solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile):
     Comment out one of the lines below to either use the random or recursive solver
     '''
 
-    full_row = len(grid)  # full_row = Full length of the row  --- Written by Logan to make explain flag work.
+    # full_row = Full length of the row  --- Written by Logan to make explain
+    # flag work.
+    full_row = len(grid)
     full_col = len(grid[0])  # fill_col = Full length of the column
     origin_grid = [[grid[i][j] for j in range(full_col)] for i in
                    range(full_row)]  # Paste all the numbers in original grid
     x, y = star_pos(grid, n_rows, n_cols)
     solve_sudoku(grid, x, y, n_rows, n_cols)
-    if show_profile == True:#just run --profile and pass others
+    if show_profile:  # just run --profile and pass others
         return grid
-    if show_hint == True:
-        if show_explain == True:#run --hint when -- explain is in the flags
+    if show_hint:
+        if show_explain:  # run --hint when -- explain is in the flags
             hint(grid, n_rows, n_cols, hint_num, origin_grid)
-            if pass_explain == False:#run --expalin when hint is correct running
+            if pass_explain == False:  # run --expalin when hint is correct running
                 explain(origin_grid, grid, full_row, full_col)
-        else:#run --hint only
+        else:  # run --hint only
             hint(grid, n_rows, n_cols, hint_num, origin_grid)
-    elif show_hint == False:#run --explain only
-        if show_explain == True:
+    elif show_hint == False:  # run --explain only
+        if show_explain:
             print(grid)
-            explain(origin_grid, grid, full_row, full_col)  # To make a explain flag
-        else:#print grid
+            # To make a explain flag
+            explain(origin_grid, grid, full_row, full_col)
+        else:  # print grid
             print(grid)
-    origin_grid.clear()#clear the list
+    origin_grid.clear()  # clear the list
 
     return grid
 
@@ -290,13 +302,16 @@ def read_file(filename):  # Task2-2
     in_grid = []
 
     current_path = abspath(dirname(__file__))  # Get the current path
-    file_path = os.path.join(current_path, 'grids\\', filename)  # This is the path of the file
+    file_path = os.path.join(
+        current_path,
+        'grids\\',
+        filename)  # This is the path of the file
 
     with open(file_path, 'r') as f:  # Open the file
         lines = f.readlines()  # Read all lines in the file
 
         for line in lines:
-            number = re.findall("\d+", line)  # Extract numbers from each line
+            number = re.findall("\\d+", line)  # Extract numbers from each line
             l = []
             for i in number:
                 l.append(int(i))
@@ -320,7 +335,8 @@ def find_grid_size(grid):  # Task2-2
         grid_row = 3
         grid_column = 3
 
-    grids = [[grid, grid_row, grid_column]]  # This is moved from the beginning of the solver
+    # This is moved from the beginning of the solver
+    grids = [[grid, grid_row, grid_column]]
     # Which tell solver which grid need be solved and the,
     # size of the grid
 
@@ -329,10 +345,12 @@ def output(out_grid, explain):  # Task2-2
     '''
     This function is output the final solution into
     '''
-    out_filename = "Output_for_'" + in_filename + "'.txt"  # Combine old file name and 'Output of'
+    out_filename = "Output_for_'" + in_filename + \
+        "'.txt"  # Combine old file name and 'Output of'
 
     current_path = abspath(dirname(__file__))  # Get the current path
-    file_path = os.path.join(current_path, 'output\\', out_filename)  # This is the path of the output file
+    # This is the path of the output file
+    file_path = os.path.join(current_path, 'output\\', out_filename)
 
     f = open(file_path, 'w')  # Output the correct grid
     f.write("The correct solution of file ''" + in_filename + "'' is:\n\n")
@@ -345,7 +363,10 @@ def output(out_grid, explain):  # Task2-2
     if explain == 0:  # Output explaination if explain not equal 0
         return 0
     else:
-        f.write("\n\n\nExplanation of how to fill correct number in the file ''" + in_filename + "'' is:\n\n")
+        f.write(
+            "\n\n\nExplanation of how to fill correct number in the file ''" +
+            in_filename +
+            "'' is:\n\n")
         for line in explain:
             for i in line:
                 f.write(i)
@@ -360,26 +381,28 @@ def hint(grid, n_rows, n_cols, num, origin_grid):  # task 2-3
     '''
     nrow = 0
 
-    global pass_explain #need to pass explain or not
+    global pass_explain  # need to pass explain or not
     pass_explain = False
-    grid_origin = []#the list used to record the position of 0
+    grid_origin = []  # the list used to record the position of 0
     # print(grid)
-    n = n_rows * n_cols#the maximum number can be filled in the grid
-    if num <= 0 or num > n:#make sure the number inputed is in the true reange of the number can be filled in the grid
-        print('Error: the number is not in the grid')#return the number is large than the maximum number can be filled in the grid
-        pass_explain = True#pass expalin
-    else:#find the positions of 0
+    n = n_rows * n_cols  # the maximum number can be filled in the grid
+    if num <= 0 or num > n:  # make sure the number inputed is in the true reange of the number can be filled in the grid
+        # return the number is large than the maximum number can be filled in
+        # the grid
+        print('Error: the number is not in the grid')
+        pass_explain = True  # pass expalin
+    else:  # find the positions of 0
         for row in origin_grid:
             nrow = nrow + 1
             ncol = 0
             for col in row:
                 ncol = ncol + 1
                 if col == 0:
-                    local = [nrow, ncol]#the position of 0
+                    local = [nrow, ncol]  # the position of 0
                     grid_origin.append(local)
                 # print(grid_origin)
         # print("Solving grid: %d" % (i + 1))
-        for no in grid_origin:#make sure the number have filled in the grid is the same as the hint number
+        for no in grid_origin:  # make sure the number have filled in the grid is the same as the hint number
             x = no[0]
             y = no[1]
             if grid[x - 1][y - 1] == num:
@@ -390,7 +413,7 @@ def hint(grid, n_rows, n_cols, num, origin_grid):  # task 2-3
     # return True
 
 
-def plot(time, time1, time2, time3, time4, time5): # task 2-4
+def plot(time, time1, time2, time3, time4, time5):  # task 2-4
     '''
     This function plot the graph of average solving time to compare two different solver performance
     '''
@@ -402,10 +425,21 @@ def plot(time, time1, time2, time3, time4, time5): # task 2-4
                    '2*3 grid random solver': sum(time4) / len(time4),
                    '3*3 grid random solver': sum(time5) / len(time5)}
     # bar plot to compare these two solvers' performance
-    plt.bar(timeaverage.keys(), timeaverage.values(), color=['yellow', 'green', 'blue', 'yellow', 'green', 'blue'])
-    plt.xlabel('size & solver') # x-label of the plot
-    plt.ylabel('Average time(s)') # y-label of the plot
-    plt.title('Average solving time for different size grids by two different solving method') # title of the plot
+    plt.bar(
+        timeaverage.keys(),
+        timeaverage.values(),
+        color=[
+            'yellow',
+            'green',
+            'blue',
+            'yellow',
+            'green',
+            'blue'])
+    plt.xlabel('size & solver')  # x-label of the plot
+    plt.ylabel('Average time(s)')  # y-label of the plot
+    # title of the plot
+    plt.title(
+        'Average solving time for different size grids by two different solving method')
     plt.show()
 
 
@@ -423,36 +457,36 @@ def parse_command_line_arguments(argv, if_out):
     show_explain = False
     show_file = False
     show_hint = False
-    list_flags = []#to record all flags
-    list_flags2 = []#to record the flags afther change positions
-    position = 0#position number
+    list_flags = []  # to record all flags
+    list_flags2 = []  # to record the flags afther change positions
+    position = 0  # position number
     for name in argv[0:MAX_FLAGS]:
-        if name == '--profile':#if the profile is in the flags, just run profile and pss all other flags
+        if name == '--profile':  # if the profile is in the flags, just run profile and pss all other flags
             list_flags.clear()
             list_flags.append(name)
             break
         if name == '--explain':
             list_flags.append(name)
             position = position + 1
-        elif name == '--file':#if the name equals --file, record the file position
+        elif name == '--file':  # if the name equals --file, record the file position
             list_flags.append(name)
             file_position = position + 1
             position = position + 1
-        elif name == '--hint':#if the name.equals --hint, record the hint number position
+        elif name == '--hint':  # if the name.equals --hint, record the hint number position
             list_flags.append(name)
             num_position = position + 1
             position = position + 1
         else:
-            position = position + 1#keep the position is correct
-    list_flags.sort()#make the flags in a arrangemnet which can run
+            position = position + 1  # keep the position is correct
+    list_flags.sort()  # make the flags in a arrangemnet which can run
     for each in list_flags:
         list_flags2.append(each)
-        if each == '--file':#when added --file, add the file name
+        if each == '--file':  # when added --file, add the file name
             list_flags2.append(argv[file_position])
-        elif each == '--hint':#when added --hint, add the hint number
+        elif each == '--hint':  # when added --hint, add the hint number
             list_flags2.append(argv[num_position])
-    print(list_flags2)
-    ######################Flag --profile#########################
+    # print(list_flags2)
+    ###################### Flag --profile#########################
     # To check if 'profile' was passed as a console parameter
     if '--profile' in list_flags2:
         show_profile = True
@@ -460,12 +494,12 @@ def parse_command_line_arguments(argv, if_out):
                  (easy1, 3, 3), (easy2, 3, 3), (easy3, 2, 3), (med1, 3, 3), (med2, 3, 3), (hard1, 3, 3)]
         return
 
-    ######################Flag --Explain#########################
+    ###################### Flag --Explain#########################
     # To check if 'explain' was passed as a console parameter
     if '--explain' in list_flags2:
         show_explain = True
 
-    ######################Flag --file#########################
+    ###################### Flag --file#########################
     if '--file' in list_flags2 and if_out == 0:
         show_file = True
         try:
@@ -480,25 +514,27 @@ def parse_command_line_arguments(argv, if_out):
             read_file(file_name)
             find_grid_size(in_grid)
 
-        except:
+        except BaseException:
             try:
                 os.system('cls')  # Remove all print in the terminal on Windows
-            except:
-                os.system('clear')  # Remove all print in the terminal on Linux or Mac
-            print("Please enter right fullname of file include extension and try it again!!!")
+            except BaseException:
+                # Remove all print in the terminal on Linux or Mac
+                os.system('clear')
+            print(
+                "Please enter right fullname of file include extension and try it again!!!")
             print("And please leave a space between '--file' and filename.")
             sys.exit()  # If file name is wrong, exit the program and print error message
 
     elif '--file' in list_flags2 and if_out == 1:
-        if show_explain == False:
+        if not show_explain:
             output(solution, 0)  # For Task2-2 file output
-        elif show_explain == True:
+        elif show_explain:
             output(solution, all_grid_explain)
 
-    ######################Flag --hint#########################
+    ###################### Flag --hint#########################
     hint_position = 0
     if '--hint' in list_flags2:
-        for i in argv[0:MAX_FLAGS]:#find the position of hint number
+        for i in argv[0:MAX_FLAGS]:  # find the position of hint number
             if i == '--hint':
                 break
             else:
@@ -556,9 +592,11 @@ def solve1(grid, n_rows, n_cols):
 
     return random_solve(grid, n_rows, n_cols)
 
+
 '''
 Task 3 by Logan
 '''
+
 
 def wavefront_solve(grid, n_rows, n_cols):
     full_rows = n_rows * n_cols
@@ -568,7 +606,7 @@ def wavefront_solve(grid, n_rows, n_cols):
 
     origin_grid = copy.deepcopy(grid)
 
-    #Initialize initial list
+    # Initialize initial list
     initial_list = []
     idx = 1
     for x in range(n_rows):
@@ -577,25 +615,27 @@ def wavefront_solve(grid, n_rows, n_cols):
             idx = idx + 1
 
     r = 0
-    available_list = {} #Dictionary of available list, key = coords // value = list
+    available_list = {}  # Dictionary of available list, key = coords // value = list
     while r < full_rows:
         for c in range(full_cols):
-            if (grid[r][c] == 0): #if element is empty
-                if (r, c) not in available_list: #if value for this coords are not initialized in dictionary
-                    available_list[(r, c)] = copy.deepcopy(initial_list) #deep copy initial list
+            if (grid[r][c] == 0):  # if element is empty
+                # if value for this coords are not initialized in dictionary
+                if (r, c) not in available_list:
+                    available_list[(r, c)] = copy.deepcopy(
+                        initial_list)  # deep copy initial list
 
-                #Eliminate matching numbers from same row
+                # Eliminate matching numbers from same row
                 for row_element in grid[r]:
                     if (row_element in available_list[(r, c)]):
                         available_list[(r, c)].remove(row_element)
-                
-                #Eliminate matching numbers from same column
+
+                # Eliminate matching numbers from same column
                 col_list = [col[c] for col in grid]
                 for col_element in col_list:
                     if (col_element in available_list[(r, c)]):
                         available_list[(r, c)].remove(col_element)
-                
-                #Calculations to find the right square coords locates in
+
+                # Calculations to find the right square coords locates in
                 square_row_idx = 0
                 if (r >= n_rows):
                     square_row_idx = (int)(r / square_rows)
@@ -606,17 +646,22 @@ def wavefront_solve(grid, n_rows, n_cols):
                 square_row_start = square_row_idx * n_rows
                 square_col_start = square_col_idx * n_cols
 
-                #Eliminate matching numbers from same square
+                # Eliminate matching numbers from same square
                 for x in range(n_rows):
                     for y in range(n_cols):
-                        if (grid[square_row_start + x][square_col_start + y] != 0 and grid[square_row_start + x][
-                            square_col_start + y] in available_list[(r, c)]):
-                            available_list[(r, c)].remove(grid[square_row_start + x][square_col_start + y])
-                
-                 #If there is only one available number, it is the right number for this element
+                        if (grid[square_row_start +
+                                 x][square_col_start +
+                                    y] != 0 and grid[square_row_start +
+                                                     x][square_col_start +
+                           y] in available_list[(r, c)]):
+                            available_list[(r, c)].remove(
+                                grid[square_row_start + x][square_col_start + y])
+
+                 # If there is only one available number, it is the right
+                 # number for this element
                 if (len(available_list[(r, c)]) == 1):
                     grid[r][c] = available_list[(r, c)][0]
-        #When iteration is over but grid is not solved yet
+        # When iteration is over but grid is not solved yet
         if (r >= full_rows - 1 and not check_solution(grid, n_rows, n_cols)):
             min_len = full_rows * full_cols + 1
             match = (int, int)
@@ -624,22 +669,26 @@ def wavefront_solve(grid, n_rows, n_cols):
                 if min_len > len(available_list[key]):
                     match = key
                     min_len = len(available_list[key])
-            #If all available list is empty, consider it unsolvable by this method
+            # If all available list is empty, consider it unsolvable by this
+            # method
             if (min_len == 0):
                 break
             x, y = match
 
-            #Choose the location with the cmallest number of possible values, select one randomly(in this case 0th element) and begin eliminating again
+            # Choose the location with the cmallest number of possible values,
+            # select one randomly(in this case 0th element) and begin
+            # eliminating again
             grid[x][y] = available_list[match][0]
             del available_list[match]
             r = 0
         else:
             r = r + 1
-    #If it is unsolvable, go for the former solve method
-    if (check_solution(grid, n_rows, n_cols)):  # If grid is complete, print grid and return it
+    # If it is unsolvable, go for the former solve method
+    if (check_solution(grid, n_rows, n_cols)
+            ):  # If grid is complete, print grid and return it
         print(grid)
         return grid
-    
+
     else:  # If solving is blocked, execute default solver and return its result
         grid = solve(origin_grid, n_rows, n_cols, False, False, False)
         return grid
@@ -649,7 +698,8 @@ def main(args):
     global solution, grids
 
     points = 0
-    show_explain = parse_command_line_arguments(args, 0)  # receiving parameters, first variable is all arguemnts
+    # receiving parameters, first variable is all arguemnts
+    show_explain = parse_command_line_arguments(args, 0)
     # Second is for output file, because there's a logical error
 
     print("Running test script for coursework 3")
@@ -683,11 +733,21 @@ def main(args):
             start_time = time.time()
             solution = wavefront_solve(copy.deepcopy(grid), n_rows, n_cols)
             elapsed_time = time.time() - start_time
-            print("The Wavefront solver solve this grid in: %f seconds" % elapsed_time)
+            print(
+                "The Wavefront solver solve this grid in: %f seconds" %
+                elapsed_time)
         start_time = time.time()
-        solution = solve(grid, n_rows, n_cols, show_explain, show_hint, show_profile)
+        solution = solve(
+            grid,
+            n_rows,
+            n_cols,
+            show_explain,
+            show_hint,
+            show_profile)
         elapsed_time = time.time() - start_time
-        print("The Default solver in Task 1 solve this grid in: %f seconds" % elapsed_time, '\n\n')
+        print(
+            "The Default solver in Task 1 solve this grid in: %f seconds" %
+            elapsed_time, '\n\n')
 
         if n_rows == 3 and n_cols == 3:
             Time.append(elapsed_time)
@@ -696,22 +756,23 @@ def main(args):
         elif n_rows == 2 and n_cols == 2:
             Time2.append(elapsed_time)
 
-        if show_hint == False:
+        if not show_hint:
             if check_solution(solution, n_rows, n_cols):
                 points = points + 10
-            if show_profile == True:
+            if show_profile:
                 if check_solution(solution, n_rows, n_cols):
                     print("grid %d correct" % (i + 1))
                 else:
                     print("grid %d incorrect" % (i + 1))
 
     print("====================================")
-    if show_profile == True:
+    if show_profile:
         plot(Time2, Time1, Time, Time3, Time4, Time5)
-    if show_hint == False:
+    if not show_hint:
         print("Test script complete, Total points: %d" % points)
 
-    parse_command_line_arguments(args, 1)  # receiving parameters, first variable is all arguemnts
+    # receiving parameters, first variable is all arguemnts
+    parse_command_line_arguments(args, 1)
     # Second is for output file, because there's a logical error
 
 
